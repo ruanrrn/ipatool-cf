@@ -1,0 +1,58 @@
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import { resolve } from 'path'
+import { readFileSync } from 'fs'
+
+const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'))
+const buildId = new Date(Date.now() + 8 * 3600 * 1000).toISOString().replace(/[-:TZ.]/g, '').slice(0, 12)
+
+const workerProxy = {
+  target: process.env.WORKER_DEV_URL || 'http://localhost:8787',
+  changeOrigin: true,
+  ws: true,
+}
+
+export default defineConfig({
+  root: 'frontend',
+  plugins: [vue()],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, '.')
+    }
+  },
+  server: {
+    port: 3000,
+    host: '0.0.0.0',
+    proxy: {
+      '/auth': workerProxy,
+      '/wisp': workerProxy,
+      '/r2': workerProxy,
+      '/m': workerProxy,
+      '/d': workerProxy,
+      '/i': workerProxy,
+      '/healthz': workerProxy,
+    }
+  },
+  build: {
+    outDir: '../dist',
+    emptyOutDir: true,
+    assetsDir: 'assets',
+    chunkSizeWarningLimit: 1100,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('/utils/api.js')) {
+            return 'api-utils'
+          }
+          if (id.includes('node_modules/vue') || id.includes('node_modules/pinia') || id.includes('node_modules/@vueuse')) {
+            return 'vue-vendor'
+          }
+        },
+      },
+    }
+  },
+  define: {
+    __APP_VERSION__: JSON.stringify(pkg.version),
+    __APP_BUILD_ID__: JSON.stringify(buildId)
+  }
+})

@@ -1,0 +1,84 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Cargo build artifacts
+target/
+
+# Wrangler / Cloudflare
+.wrangler/
+.dev.vars
+
+# WASM build outputs (committed to enable one-click Cloudflare deploy
+# without a Rust toolchain in the build runner). Regenerate locally with
+# `npm run build:wasm`. Only the auto-generated metadata files are
+# ignored.
+frontend/public/wasm/.gitignore
+frontend/public/wasm/package.json
+
+# Rust
+**/*.rs.bk
+*.pdb
+*.so
+*.dylib
+*.dll
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Build outputs
+dist/
+server/dist/
+build/
+*.log
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Docker
+.dockerignore
+
+# Test coverage
+coverage/
+*.lcov
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Local runtime state
+downloads/
+server/*.db
+artifacts/
+
+# Mobile fix exploration artifacts
+mobile_fix_backup/
+apply-mobile-fix.sh
+mobile-element-plus-solution.css
+mobile-tablayout-solution.css
+mobile-tailwind-config-solution.js
+mobile-tokens-solution.css
+COMPONENT_SPEC.md
+MOBILE_FIX_GUIDE.md
+MOBILE_QUICK_REFERENCE.md
+MOBILE_SOLUTIONS_SUMMARY.md
+tmp/
+data.db
